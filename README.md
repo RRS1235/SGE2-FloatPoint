@@ -153,25 +153,3 @@ As decisões e seus trade-offs estão no Apêndice B de [`docs/Float_Point_Conso
 ### 8.1. Execução das Fitness Functions (ArchUnit)
 
 Para garantir que as regras de dependência não sejam violadas, as regras abaixo estão **definidas na governança das ADRs e ainda não foram executadas**. Como a stack proposta é C#/.NET, a ferramenta seria **ArchUnitNET** ou **NetArchTest** (o ArchUnit original é Java). Só serão marcadas como validadas quando houver testes no repositório e logs de CI.
-
-| Regra | Como validar | Critério de aprovação | Situação |
-|---|---|---|---|
-| Regra 1 — A camada de Domínio não possui referência direta para a Infraestrutura | Teste de arquitetura sobre assemblies e namespaces | Nenhuma dependência do Domínio para adapters de PostgreSQL, Redis ou Kafka | Planejada |
-| Regra 2 — Toda classe de repositório implementa a interface abstrata correspondente | Teste de arquitetura/reflexão | Ex.: `ILanceRepository` implementada por todo repositório | Planejada |
-| Regra 3 — O Core não referencia SDK nem modelo do gateway de pagamento | Busca de referências | Só a ACL referencia o provedor (ADR 006/007) | Planejada |
-| Regra 4 — Sem chamadas síncronas do Core para Auditoria, Fraude e Notificações | Regra de CI | Comunicação só pelo Event Bus (ADR 007) | Planejada |
-| Regra 5 — Todo adapter de entrada usa a biblioteca de validação de JWT e rate limiting | Teste de arquitetura | Nenhuma rota sem validação (ADR 006) | Planejada |
-| Regra 6 — Contratos de eventos compatíveis | Schema Registry e Pact | Mudança incompatível bloqueia o CI | Planejada |
-| Regra 7 — Desempenho do Bid Service | Teste de carga em staging, 5.000 lances/s na mesma chave | p99 ≤ 50 ms e nenhum lance perdido ou duplicado (ADR 008) | Planejada |
-| Regra 8 — Consumidores idempotentes | Reentrega simulada do mesmo evento | Nenhum efeito duplicado (ex.: cobrança), deduplicação por chave de negócio | Planejada |
-
-## Pendências conhecidas
-
-1. Padronizar Kafka × RabbitMQ nas figuras do C4 Nível 3 e da Missão 2.
-2. Atualizar o C4 Nível 3 conforme a ADR 002.
-3. Conferir o TCO do .NET na ADR 008 (US$ 95,8 mil num trecho e US$ 93 mil em outro).
-4. Preencher as datas das ADRs 001 a 005.
-5. Definir SLO de disponibilidade, tempo de subida de réplicas e retenção de auditoria.
-6. Definir o Bulkhead do gateway de pagamento (PIX/Cartão) e o padrão Observer ou Strategy do kata.
-7. Formalizar a sanitização de PII antes dos modelos de IA.
-8. Incluir os caminhos reais de código quando o repositório de implementação existir.
